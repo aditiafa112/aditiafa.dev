@@ -15,11 +15,11 @@ body {
 }
 
 body {
-  height: 100%;
+  min-height: 100%;
 }
 
-#_next {
-  height: 100%;
+body {
+  @apply bg-sky-200
 }
 
 a {
