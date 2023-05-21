@@ -1,7 +1,6 @@
 import clsxm from "@/utils/clsxm";
 import React, { FunctionComponent, PropsWithChildren } from "react";
 import WorkSans from "@/helpers/font/WorkSansFont";
-import Image from "next/image";
 
 interface IContent {
   children: React.ReactNode;
