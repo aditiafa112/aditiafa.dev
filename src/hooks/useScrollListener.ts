@@ -1,15 +1,15 @@
-import { RefObject, useCallback } from 'react';
-import useMounted from './useMounted';
+import { RefObject, useCallback } from "react";
+import useMounted from "./useMounted";
 
 interface ScrollListenerParams {
   scrollY: number;
   scrollX: number;
 }
 
-type Reference<T> = RefObject<T>|'window';
+type Reference<T> = RefObject<T> | "window";
 
 const getReference = <T>(reference: Reference<T>) => {
-  const isReactRef = reference !== 'window';
+  const isReactRef = reference !== "window";
   const element = (reference as RefObject<T>)?.current;
   return { isReactRef, element };
 };
@@ -19,20 +19,24 @@ const getReference = <T>(reference: Reference<T>) => {
  * @param callback - event to handle on element scroll
  * @param reference - The ref of element to listen
  */
-function useScrollListener<T extends Element>(callback: (scrollPosition: ScrollListenerParams) => void, reference: Reference<T>) {
+function useScrollListener<T extends Element>(
+  callback: (scrollPosition: ScrollListenerParams) => void,
+  reference: Reference<T>
+) {
   const handleScroll = useCallback(() => {
     const { isReactRef, element } = getReference(reference);
     const scrollY = (isReactRef ? element?.scrollTop : window.scrollY) ?? 0;
     const scrollX = (isReactRef ? element?.scrollWidth : window.scrollX) ?? 0;
     callback({ scrollX, scrollY });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [callback]);
 
   useMounted(() => {
     const { isReactRef, element } = getReference(reference);
     const target = isReactRef ? element : window;
-    target?.addEventListener('scroll', handleScroll);
+    target?.addEventListener("scroll", handleScroll);
     return () => {
-      target?.removeEventListener('scroll', handleScroll);
+      target?.removeEventListener("scroll", handleScroll);
     };
   });
 }

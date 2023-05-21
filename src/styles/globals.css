@@ -12,17 +12,45 @@ html,
 body {
   max-width: 100vw;
   overflow-x: hidden;
+  min-height: 100vh;
 }
 
-body {
-  min-height: 100%;
-}
-
-body {
-  @apply bg-sky-200
+#__next {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 a {
   color: inherit;
   text-decoration: none;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  @apply text-slate-700
+}
+
+p {
+  @apply text-base
+}
+
+body {
+  background-image: url("/images/splash.svg");
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(90, 90, 90, 0);
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0);
 }

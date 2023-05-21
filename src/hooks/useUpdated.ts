@@ -12,6 +12,7 @@ function useUpdated(callback: EffectCallback, deps: DependencyList): void {
   useEffect(() => {
     if (mounted.current) return callback();
     else mounted.current = true;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, deps);
 }
 
