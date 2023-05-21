@@ -1,6 +1,6 @@
 import React, { Fragment } from "react";
 
-import Content from "../base/content/index";
+import Content from "../base/content";
 import Footer from "../base/footer";
 import Header from "../base/header";
 
