@@ -180,7 +180,7 @@ export default function About() {
               >
                 gading
               </a>
-              . I made this site after visit her site as a main inspiration{" "}
+              . I made this site after visit his site as a main inspiration{" "}
               <br /> and maybe you should check his website too.
             </p>
           </li>
