@@ -63,8 +63,15 @@ export default function About() {
           Music that i&apos;m listening
         </h2>
         <p>
-          You can check my Spotify Profile, but sometime i just listening to
-          lofi (you know la).
+          You can check my{" "}
+          <a
+            href="https://open.spotify.com/user/0nlz0ak6wgsz2s3ekyiif3bom?si=1cf706b599514ffc"
+            target="_blank"
+            className=" text-blue-600 hover:text-blue-700"
+          >
+            Spotify
+          </a>{" "}
+          Profile, but sometime i just listening to lofi.
         </p>
       </section>
       <section className="mb-8" id="tech-used">
@@ -144,10 +151,10 @@ export default function About() {
       </section>
       <section className="mb-8" id="game-setup">
         <h2 className="mb-1 text-lg font-bold sm:text-xl md:text-2xl">
-          Work From Home setup
+          Game setup
         </h2>
         <p className="mb-1">
-          I prefer play game in mobile phone platform than desktop.
+          prefer play game in mobile phone platform than desktop.
         </p>
         <ul className="ml-[13px] list-outside list-disc">
           <li>
@@ -155,6 +162,53 @@ export default function About() {
           </li>
           <li>
             <p className="inline">Acer Aspire 6 - Captain America Edition</p>
+          </li>
+        </ul>
+      </section>
+      <section className="mb-8" id="game-setup">
+        <h2 className="mb-1 text-lg font-bold sm:text-xl md:text-2xl">
+          Inspirate make this site
+        </h2>
+        <ul className="ml-[13px] list-outside list-disc">
+          <li>
+            <p className="inline">
+              Thanks to mas{" "}
+              <a
+                href="https://gading.dev/"
+                target="_blank"
+                className="text-blue-600 hover:text-blue-700"
+              >
+                gading
+              </a>
+              . I made this site after visit her site as a main inspiration{" "}
+              <br /> and maybe you should check his website too.
+            </p>
+          </li>
+          <li>
+            <p className="inline">
+              to{" "}
+              <a
+                href="https://www.instagram.com/zfachrian/?hl=en"
+                target="_blank"
+                className=" text-blue-600 hover:text-blue-700"
+              >
+                Zuhad Achmad Fachrian.
+              </a>{" "}
+              for help me desain this site, i appreciate to you.
+            </p>
+          </li>
+          <li>
+            <p className="inline">
+              to{" "}
+              <a
+                href="https://azhariemuhammad.netlify.app/"
+                target="_blank"
+                className=" text-blue-600 hover:text-blue-700"
+              >
+                Azharie Muhammad.
+              </a>{" "}
+              because the menu called story inspire after visiting your site.
+            </p>
           </li>
         </ul>
       </section>

@@ -17,7 +17,7 @@ const Footer: FunctionComponent<PropsWithChildren<IFooter>> = (props) => {
   return (
     <footer className={styleFooter}>
       <p className="text-sm">
-        © 2023 aditia.dev build with 奇跡 (kiseki) By Aditia F.A.
+        © 2023 aditia.dev build with 奇跡 (kiseki) By me.
       </p>
     </footer>
   );

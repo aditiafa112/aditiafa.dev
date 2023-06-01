@@ -62,7 +62,7 @@ const Navbar = () => {
               "mx-2 px-1 text-lg font-medium text-slate-700 transition duration-300 ease-in-out hover:bg-slate-700 hover:text-white"
             )}
           >
-            Home
+            home
           </Link>
           {LIST_MENU.map((menu) => {
             return (

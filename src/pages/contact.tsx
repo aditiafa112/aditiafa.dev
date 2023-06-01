@@ -27,65 +27,65 @@ export default function Contact() {
           />
         </a>
         <a
-          href="mailto:aditiafa112@gmail.com"
+          href="https://github.com/aditiafa112"
           target="_blank"
           className="group relative cursor-pointer rounded-lg border-4 border-slate-700 py-16  text-center hover:bg-[#f2f2f2]"
         >
           <Image
             src="/icons/social-media/github.svg"
-            alt={"Email"}
+            alt={"Github"}
             height={0}
             width={100}
             className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transform transition-all duration-300 ease-in-out group-hover:scale-110"
           />
         </a>
         <a
-          href="mailto:aditiafa112@gmail.com"
+          href="https://www.instagram.com/aditia_flc/"
           target="_blank"
           className="group relative cursor-pointer rounded-lg border-4 border-slate-700 py-16  text-center hover:bg-[#f2f2f2]"
         >
           <Image
             src="/icons/social-media/instagram.svg"
-            alt={"Email"}
+            alt={"Instagram"}
             height={0}
             width={100}
             className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transform transition-all duration-300 ease-in-out group-hover:scale-110"
           />
         </a>
         <a
-          href="mailto:aditiafa112@gmail.com"
+          href="https://twitter.com/AditiaArvin"
           target="_blank"
           className="group relative cursor-pointer rounded-lg border-4 border-slate-700 py-16  text-center hover:bg-[#f2f2f2]"
         >
           <Image
             src="/icons/social-media/twitter.svg"
-            alt={"Email"}
+            alt={"Twitter"}
             height={0}
             width={100}
             className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transform transition-all duration-300 ease-in-out group-hover:scale-110"
           />
         </a>
         <a
-          href="mailto:aditiafa112@gmail.com"
+          href="https://www.linkedin.com/in/aditiafa/"
           target="_blank"
           className="group relative cursor-pointer rounded-lg border-4 border-slate-700 py-16  text-center hover:bg-[#f2f2f2]"
         >
           <Image
-            src="/icons/social-media/linkedIn.svg"
-            alt={"Email"}
+            src="/icons/social-media/linkedin.svg"
+            alt={"Linkedin"}
             height={0}
             width={100}
             className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transform transition-all duration-300 ease-in-out group-hover:scale-110"
           />
         </a>
         <a
-          href="mailto:aditiafa112@gmail.com"
+          href="https://www.facebook.com/aditiafa112/"
           target="_blank"
           className="group relative cursor-pointer rounded-lg border-4 border-slate-700 py-16  text-center hover:bg-[#f2f2f2]"
         >
           <Image
             src="/icons/social-media/facebook.svg"
-            alt={"Email"}
+            alt={"Facebook"}
             height={0}
             width={100}
             className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transform transition-all duration-300 ease-in-out group-hover:scale-110"
