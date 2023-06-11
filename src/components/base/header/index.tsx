@@ -108,6 +108,13 @@ export default function Header() {
         content="/meta/favicon/ms-icon-144x144.png"
       />
       <meta name="theme-color" content="#ffffff"></meta>
+
+      {/* <!-- Umami Analytics --> */}
+      <script
+        async
+        src="https://analytics.umami.is/script.js"
+        data-website-id="ed153552-3935-48cf-8040-7d0d03005e06"
+      ></script>
     </Head>
   );
 }

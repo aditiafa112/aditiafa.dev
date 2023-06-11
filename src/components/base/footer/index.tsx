@@ -17,8 +17,33 @@ const Footer: FunctionComponent<PropsWithChildren<IFooter>> = (props) => {
   return (
     <footer className={styleFooter}>
       <p className="text-sm">
-        © 2023 aditia.dev build with 奇跡 (kiseki) By me.
+        © 2023 aditia.dev{" "}
+        <a
+          className="text-orange-400 hover:underline"
+          href="https://github.com/aditiafa112/aditiafa.dev"
+          target="_blank"
+        >
+          build
+        </a>{" "}
+        with 奇跡 (kiseki) By me.
       </p>
+      <div>
+        <a
+          className="cursor-pointer text-sm text-orange-400 hover:underline"
+          href="https://analytics.umami.is/share/bSDtlEV2ggpzeMdZ/aditiafa.dev"
+          target="_blank"
+        >
+          Analytics
+        </a>
+        <span className="mx-2 inline-block text-sm">•</span>
+        <a
+          className="cursor-pointer text-sm text-orange-400 hover:underline"
+          href="https://github.com/aditiafa112/aditiafa.dev"
+          target="_blank"
+        >
+          Repo
+        </a>
+      </div>
     </footer>
   );
 };
