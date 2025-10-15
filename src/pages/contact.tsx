@@ -1,7 +1,39 @@
 import MainLayout from "@/components/layouts/MainLayout";
 import Image from "next/image";
 
+// Declare gtag function for TypeScript
+declare global {
+  interface Window {
+    gtag?: (...args: any[]) => void;
+    dataLayer?: any[];
+  }
+}
+
 export default function Contact() {
+  // Function to track social media clicks
+  const trackSocialClick = (platform: string, url: string) => {
+    // Track with Google Analytics 4
+    if (typeof window.gtag !== "undefined") {
+      window.gtag("event", "social_click", {
+        platform: platform,
+        url: url,
+        page: "contact",
+      });
+    }
+
+    // Track with Google Tag Manager
+    if (typeof window.dataLayer !== "undefined") {
+      window.dataLayer.push({
+        event: "social_media_click",
+        platform: platform,
+        url: url,
+        page: "contact",
+      });
+    }
+
+    console.log(`Tracked click: ${platform}`);
+  };
+
   return (
     <MainLayout>
       <h1 className="mx-auto mb-6 whitespace-nowrap text-xl font-bold sm:text-2xl md:text-4xl">
@@ -16,6 +48,9 @@ export default function Contact() {
         <a
           href="mailto:aditiafa112@gmail.com"
           target="_blank"
+          onClick={() =>
+            trackSocialClick("Email", "mailto:aditiafa112@gmail.com")
+          }
           className="group relative cursor-pointer rounded-lg border-4 border-slate-700 py-16  text-center hover:bg-[#f2f2f2]"
         >
           <Image
@@ -29,6 +64,9 @@ export default function Contact() {
         <a
           href="https://github.com/aditiafa112"
           target="_blank"
+          onClick={() =>
+            trackSocialClick("GitHub", "https://github.com/aditiafa112")
+          }
           className="group relative cursor-pointer rounded-lg border-4 border-slate-700 py-16  text-center hover:bg-[#f2f2f2]"
         >
           <Image
@@ -42,6 +80,12 @@ export default function Contact() {
         <a
           href="https://www.instagram.com/aditia_flc/"
           target="_blank"
+          onClick={() =>
+            trackSocialClick(
+              "Instagram",
+              "https://www.instagram.com/aditia_flc/"
+            )
+          }
           className="group relative cursor-pointer rounded-lg border-4 border-slate-700 py-16  text-center hover:bg-[#f2f2f2]"
         >
           <Image
@@ -55,6 +99,9 @@ export default function Contact() {
         <a
           href="https://twitter.com/AditiaArvin"
           target="_blank"
+          onClick={() =>
+            trackSocialClick("Twitter", "https://twitter.com/AditiaArvin")
+          }
           className="group relative cursor-pointer rounded-lg border-4 border-slate-700 py-16  text-center hover:bg-[#f2f2f2]"
         >
           <Image
@@ -68,6 +115,12 @@ export default function Contact() {
         <a
           href="https://www.linkedin.com/in/aditiafa/"
           target="_blank"
+          onClick={() =>
+            trackSocialClick(
+              "LinkedIn",
+              "https://www.linkedin.com/in/aditiafa/"
+            )
+          }
           className="group relative cursor-pointer rounded-lg border-4 border-slate-700 py-16  text-center hover:bg-[#f2f2f2]"
         >
           <Image
@@ -81,6 +134,12 @@ export default function Contact() {
         <a
           href="https://www.facebook.com/aditiafa112/"
           target="_blank"
+          onClick={() =>
+            trackSocialClick(
+              "Facebook",
+              "https://www.facebook.com/aditiafa112/"
+            )
+          }
           className="group relative cursor-pointer rounded-lg border-4 border-slate-700 py-16  text-center hover:bg-[#f2f2f2]"
         >
           <Image
