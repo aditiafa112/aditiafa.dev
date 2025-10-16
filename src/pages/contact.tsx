@@ -1,5 +1,7 @@
 import MainLayout from "@/components/layouts/MainLayout";
 import Image from "next/image";
+import Head from "next/head";
+import Script from "next/script";
 
 // Declare gtag function for TypeScript
 declare global {
@@ -36,6 +38,58 @@ export default function Contact() {
 
   return (
     <MainLayout>
+      <Head>
+        <title>Contact - Aditia Fa</title>
+        <meta
+          name="description"
+          content="Connect with Aditia Fa via email, GitHub, Instagram, LinkedIn, Twitter, and Facebook."
+        />
+        <meta property="og:title" content="Contact - Aditia Fa" />
+        <meta
+          property="og:description"
+          content="Connect with Aditia Fa via email, GitHub, Instagram, LinkedIn, Twitter, and Facebook."
+        />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://aditiafa.dev/contact" />
+      </Head>
+
+      {/* Google Analytics 4 */}
+      <Script
+        src="https://www.googletagmanager.com/gtag/js?id=G-9L8G63EBVG"
+        strategy="afterInteractive"
+      />
+      <Script id="google-analytics" strategy="afterInteractive">
+        {`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9L8G63EBVG');
+        `}
+      </Script>
+
+      {/* Google Tag Manager */}
+      <Script
+        id="google-tag-manager"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-W6W9WSF7');`,
+        }}
+      />
+
+      {/* Google Tag Manager (noscript) */}
+      <noscript>
+        <iframe
+          src="https://www.googletagmanager.com/ns.html?id=GTM-W6W9WSF7"
+          height="0"
+          width="0"
+          style={{ display: "none", visibility: "hidden" }}
+        />
+      </noscript>
+
       <h1 className="mx-auto mb-6 whitespace-nowrap text-xl font-bold sm:text-2xl md:text-4xl">
         Contact
       </h1>
