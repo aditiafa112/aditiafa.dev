@@ -51,35 +51,69 @@ export default function Contact() {
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://aditiafa.dev/contact" />
 
-        {/* Google Analytics 4 */}
-        <script
-          async
-          src="https://www.googletagmanager.com/gtag/js?id=G-9L8G63EBVG"
-        ></script>
+        {/* Google Analytics 4 - Disabled for Preview Mode */}
         <script>
           {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'G-9L8G63EBVG');
+            // Check if GTM Preview mode is active
+            function isPreviewMode() {
+              return window.location.search.includes('gtm_debug') || 
+                     window.location.search.includes('gtm_preview') ||
+                     document.cookie.includes('gtm_debug') ||
+                     window.location.hostname.includes('preview') ||
+                     window.location.hostname.includes('debug');
+            }
+            
+            // Only load GA4 if NOT in preview mode
+            if (!isPreviewMode()) {
+              // Load GA4 script
+              var script = document.createElement('script');
+              script.async = true;
+              script.src = 'https://www.googletagmanager.com/gtag/js?id=G-9L8G63EBVG';
+              document.head.appendChild(script);
+              
+              // Initialize GA4
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-9L8G63EBVG');
+            } else {
+              console.log('Preview mode detected - GA4 disabled');
+              window.dataLayer = window.dataLayer || [];
+              window.gtag = function(){console.log('GA4 disabled in preview mode');};
+            }
           `}
         </script>
 
-        {/* Google Tag Manager - Active for Contact Page Only */}
+        {/* Google Tag Manager - Disabled for Preview Mode */}
         <script>
           {`
-            (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-            new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-            j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-            'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-            })(window,document,'script','dataLayer','GTM-W6W9WSF7');
+            // Check if GTM Preview mode is active
+            function isGTMPreviewMode() {
+              return window.location.search.includes('gtm_debug') || 
+                     window.location.search.includes('gtm_preview') ||
+                     document.cookie.includes('gtm_debug') ||
+                     window.location.hostname.includes('preview') ||
+                     window.location.hostname.includes('debug');
+            }
             
-            // Custom configuration for contact page
-            window.dataLayer = window.dataLayer || [];
-            window.dataLayer.push({
-              'page_type': 'contact',
-              'custom_page': true
-            });
+            // Only load GTM if NOT in preview mode
+            if (!isGTMPreviewMode()) {
+              (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+              new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+              j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+              'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+              })(window,document,'script','dataLayer','GTM-W6W9WSF7');
+              
+              // Custom configuration for contact page
+              window.dataLayer = window.dataLayer || [];
+              window.dataLayer.push({
+                'page_type': 'contact',
+                'custom_page': true
+              });
+            } else {
+              console.log('GTM Preview mode detected - GTM disabled');
+              window.dataLayer = window.dataLayer || [];
+            }
           `}
         </script>
       </Helmet>
