@@ -61,7 +61,18 @@ export default function Contact() {
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
-            gtag('config', 'G-9L8G63EBVG');
+            gtag('config', 'G-9L8G63EBVG', {
+              send_page_view: false,  // Disable page_view events
+              enhanced_measurement: {
+                scrolls: false,        // Disable scroll events
+                outbound_clicks: false, // Disable outbound click events
+                site_search: false,    // Disable site search events
+                video_engagement: false, // Disable video events
+                file_downloads: false,  // Disable file download events
+                page_changes: false,   // Disable gtm.historyChange-v2 events
+                form_interactions: false // Disable form interaction events
+              }
+            });
           `}
         </script>
 
