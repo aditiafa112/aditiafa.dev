@@ -61,22 +61,11 @@ export default function Contact() {
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
-            gtag('config', 'G-9L8G63EBVG', {
-              send_page_view: false,  // Disable page_view events
-              enhanced_measurement: {
-                scrolls: false,        // Disable scroll events
-                outbound_clicks: false, // Disable outbound click events
-                site_search: false,    // Disable site search events
-                video_engagement: false, // Disable video events
-                file_downloads: false,  // Disable file download events
-                page_changes: false,   // Disable gtm.historyChange-v2 events
-                form_interactions: false // Disable form interaction events
-              }
-            });
+            gtag('config', 'G-9L8G63EBVG');
           `}
         </script>
 
-        {/* Google Tag Manager */}
+        {/* Google Tag Manager - Active for Contact Page Only */}
         <script>
           {`
             (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -84,6 +73,13 @@ export default function Contact() {
             j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
             })(window,document,'script','dataLayer','GTM-W6W9WSF7');
+            
+            // Custom configuration for contact page
+            window.dataLayer = window.dataLayer || [];
+            window.dataLayer.push({
+              'page_type': 'contact',
+              'custom_page': true
+            });
           `}
         </script>
       </Helmet>
