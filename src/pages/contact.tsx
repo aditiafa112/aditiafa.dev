@@ -54,17 +54,28 @@ export default function Contact() {
         {/* Google Analytics 4 - Disabled for Preview Mode */}
         <script>
           {`
-            // Check if GTM Preview mode is active
-            function isPreviewMode() {
-              return window.location.search.includes('gtm_debug') || 
-                     window.location.search.includes('gtm_preview') ||
-                     document.cookie.includes('gtm_debug') ||
-                     window.location.hostname.includes('preview') ||
-                     window.location.hostname.includes('debug');
+            // Check if tracking should be enabled
+            function shouldEnableTracking() {
+              // Only enable tracking if:
+              // 1. Path is exactly /contact
+              // 2. No query string parameters
+              // 3. No hash parameters
+              const isContactPage = window.location.pathname === '/contact';
+              const hasQueryString = window.location.search.length > 0;
+              const hasHash = window.location.hash.length > 0;
+              
+              console.log('Path:', window.location.pathname);
+              console.log('Query string:', window.location.search);
+              console.log('Hash:', window.location.hash);
+              console.log('Is contact page:', isContactPage);
+              console.log('Has query string:', hasQueryString);
+              console.log('Has hash:', hasHash);
+              
+              return isContactPage && !hasQueryString && !hasHash;
             }
             
-            // Only load GA4 if NOT in preview mode
-            if (!isPreviewMode()) {
+            // Only load GA4 if tracking should be enabled
+            if (shouldEnableTracking()) {
               // Load GA4 script
               var script = document.createElement('script');
               script.async = true;
@@ -77,9 +88,10 @@ export default function Contact() {
               gtag('js', new Date());
               gtag('config', 'G-9L8G63EBVG');
             } else {
-              console.log('Preview mode detected - GA4 disabled');
+              console.log('Tracking disabled - conditions not met');
+              console.log('URL:', window.location.href);
               window.dataLayer = window.dataLayer || [];
-              window.gtag = function(){console.log('GA4 disabled in preview mode');};
+              window.gtag = function(){console.log('GA4 disabled - tracking conditions not met');};
             }
           `}
         </script>
@@ -87,17 +99,21 @@ export default function Contact() {
         {/* Google Tag Manager - Disabled for Preview Mode */}
         <script>
           {`
-            // Check if GTM Preview mode is active
-            function isGTMPreviewMode() {
-              return window.location.search.includes('gtm_debug') || 
-                     window.location.search.includes('gtm_preview') ||
-                     document.cookie.includes('gtm_debug') ||
-                     window.location.hostname.includes('preview') ||
-                     window.location.hostname.includes('debug');
+            // Check if tracking should be enabled (same logic as GA4)
+            function shouldEnableTracking() {
+              // Only enable tracking if:
+              // 1. Path is exactly /contact
+              // 2. No query string parameters
+              // 3. No hash parameters
+              const isContactPage = window.location.pathname === '/contact';
+              const hasQueryString = window.location.search.length > 0;
+              const hasHash = window.location.hash.length > 0;
+              
+              return isContactPage && !hasQueryString && !hasHash;
             }
             
-            // Only load GTM if NOT in preview mode
-            if (!isGTMPreviewMode()) {
+            // Only load GTM if tracking should be enabled
+            if (shouldEnableTracking()) {
               (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
               new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
               j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
@@ -111,7 +127,8 @@ export default function Contact() {
                 'custom_page': true
               });
             } else {
-              console.log('GTM Preview mode detected - GTM disabled');
+              console.log('GTM disabled - tracking conditions not met');
+              console.log('URL:', window.location.href);
               window.dataLayer = window.dataLayer || [];
             }
           `}
