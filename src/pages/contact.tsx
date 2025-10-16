@@ -13,6 +13,17 @@ declare global {
 export default function Contact() {
   // Function to track social media clicks
   const trackSocialClick = (platform: string, url: string) => {
+    // Check if tracking conditions are met
+    const isContactPage = window.location.pathname === "/contact";
+    const hasQueryString = window.location.search.length > 0;
+    const hasHash = window.location.hash.length > 0;
+    const shouldTrack = isContactPage && !hasQueryString && !hasHash;
+
+    if (!shouldTrack) {
+      console.log(`Tracking disabled - click on ${platform} not tracked`);
+      return;
+    }
+
     // Track with Google Analytics 4
     if (typeof window.gtag !== "undefined") {
       window.gtag("event", "social_click", {
@@ -90,8 +101,7 @@ export default function Contact() {
             } else {
               console.log('Tracking disabled - conditions not met');
               console.log('URL:', window.location.href);
-              window.dataLayer = window.dataLayer || [];
-              window.gtag = function(){console.log('GA4 disabled - tracking conditions not met');};
+              // Don't initialize anything - completely disable
             }
           `}
         </script>
@@ -129,21 +139,14 @@ export default function Contact() {
             } else {
               console.log('GTM disabled - tracking conditions not met');
               console.log('URL:', window.location.href);
-              window.dataLayer = window.dataLayer || [];
+              // Don't initialize anything - completely disable
             }
           `}
         </script>
       </Helmet>
 
-      {/* Google Tag Manager (noscript) */}
-      <noscript>
-        <iframe
-          src="https://www.googletagmanager.com/ns.html?id=GTM-W6W9WSF7"
-          height="0"
-          width="0"
-          style={{ display: "none", visibility: "hidden" }}
-        />
-      </noscript>
+      {/* Google Tag Manager (noscript) - Disabled */}
+      <noscript>{/* GTM noscript disabled - no tracking */}</noscript>
 
       <h1 className="mx-auto mb-6 whitespace-nowrap text-xl font-bold sm:text-2xl md:text-4xl">
         Contact
