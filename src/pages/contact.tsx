@@ -11,6 +11,24 @@ declare global {
 }
 
 export default function Contact() {
+  // Test history push with state (for demonstration)
+  const testHistoryPush = () => {
+    // Push history dengan state data
+    history.pushState(
+      {
+        page: "contact",
+        user: "test_user",
+        timestamp: Date.now(),
+        customData: "test_state_data",
+      },
+      "Contact Page with State",
+      "/contact?test=1" // Note: ini akan disable tracking karena ada query string
+    );
+
+    console.log("History pushed with state:", history.state);
+    console.log("Current URL:", window.location.href);
+  };
+
   // Function to track social media clicks
   const trackSocialClick = (platform: string, url: string) => {
     // Check if tracking conditions are met
@@ -62,87 +80,53 @@ export default function Contact() {
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://aditiafa.dev/contact" />
 
-        {/* Google Analytics 4 - Disabled for Preview Mode */}
-        <script>
-          {`
-            // Check if tracking should be enabled
-            function shouldEnableTracking() {
-              // Only enable tracking if:
-              // 1. Path is exactly /contact
-              // 2. No query string parameters
-              // 3. No hash parameters
-              const isContactPage = window.location.pathname === '/contact';
-              const hasQueryString = window.location.search.length > 0;
-              const hasHash = window.location.hash.length > 0;
-              
-              console.log('Path:', window.location.pathname);
-              console.log('Query string:', window.location.search);
-              console.log('Hash:', window.location.hash);
-              console.log('Is contact page:', isContactPage);
-              console.log('Has query string:', hasQueryString);
-              console.log('Has hash:', hasHash);
-              
-              return isContactPage && !hasQueryString && !hasHash;
-            }
-            
-            // Only load GA4 if tracking should be enabled
-            if (shouldEnableTracking()) {
-              // Load GA4 script
-              var script = document.createElement('script');
-              script.async = true;
-              script.src = 'https://www.googletagmanager.com/gtag/js?id=G-9L8G63EBVG';
-              document.head.appendChild(script);
-              
-              // Initialize GA4
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-              gtag('config', 'G-9L8G63EBVG');
-            } else {
-              console.log('Tracking disabled - conditions not met');
-              console.log('URL:', window.location.href);
-              // Don't initialize anything - completely disable
-            }
-          `}
-        </script>
+        {/* Google Analytics 4 - Conditional Loading */}
+        {typeof window !== "undefined" &&
+          window.location.pathname === "/contact" &&
+          window.location.search === "" &&
+          window.location.hash === "" && (
+            <>
+              <script
+                async
+                src="https://www.googletagmanager.com/gtag/js?id=G-9L8G63EBVG"
+              ></script>
+              <script>
+                {`
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', 'G-9L8G63EBVG');
+                console.log('GA4 loaded - conditions met');
+              `}
+              </script>
+            </>
+          )}
 
-        {/* Google Tag Manager - Disabled for Preview Mode */}
-        <script>
-          {`
-            // Check if tracking should be enabled (same logic as GA4)
-            function shouldEnableTracking() {
-              // Only enable tracking if:
-              // 1. Path is exactly /contact
-              // 2. No query string parameters
-              // 3. No hash parameters
-              const isContactPage = window.location.pathname === '/contact';
-              const hasQueryString = window.location.search.length > 0;
-              const hasHash = window.location.hash.length > 0;
-              
-              return isContactPage && !hasQueryString && !hasHash;
-            }
-            
-            // Only load GTM if tracking should be enabled
-            if (shouldEnableTracking()) {
-              (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-              new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-              j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-              'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-              })(window,document,'script','dataLayer','GTM-W6W9WSF7');
-              
-              // Custom configuration for contact page
-              window.dataLayer = window.dataLayer || [];
-              window.dataLayer.push({
-                'page_type': 'contact',
-                'custom_page': true
-              });
-            } else {
-              console.log('GTM disabled - tracking conditions not met');
-              console.log('URL:', window.location.href);
-              // Don't initialize anything - completely disable
-            }
-          `}
-        </script>
+        {/* Google Tag Manager - Conditional Loading */}
+        {typeof window !== "undefined" &&
+          window.location.pathname === "/contact" &&
+          window.location.search === "" &&
+          window.location.hash === "" && (
+            <>
+              <script>
+                {`
+                (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+                new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+                j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+                'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+                })(window,document,'script','dataLayer','GTM-W6W9WSF7');
+                
+                // Custom configuration for contact page
+                window.dataLayer = window.dataLayer || [];
+                window.dataLayer.push({
+                  'page_type': 'contact',
+                  'custom_page': true
+                });
+                console.log('GTM loaded - conditions met');
+              `}
+              </script>
+            </>
+          )}
       </Helmet>
 
       {/* Google Tag Manager (noscript) - Disabled */}
@@ -151,6 +135,16 @@ export default function Contact() {
       <h1 className="mx-auto mb-6 whitespace-nowrap text-xl font-bold sm:text-2xl md:text-4xl">
         Contact
       </h1>
+
+      {/* Test History Push Button */}
+      <div className="mx-auto mb-4 text-center">
+        <button
+          onClick={testHistoryPush}
+          className="rounded bg-red-600 px-4 py-2 text-white hover:bg-red-700"
+        >
+          Test History Push (Disable Tracking)
+        </button>
+      </div>
       <p className="mb-12 text-center">
         Let&apos;s connect! I would be happy to be friends with you.
         <br />
