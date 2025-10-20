@@ -14,19 +14,84 @@ export default function Contact() {
   // Test history push with state (for demonstration)
   const testHistoryPush = () => {
     // Push history dengan state data
-    history.pushState(
-      {
-        page: "contact",
-        user: "test_user",
-        timestamp: Date.now(),
-        customData: "test_state_data",
-      },
-      "Contact Page with State",
-      "/contact"
-    );
+    const stateData = {
+      page: "contact",
+      user: "test_user",
+      timestamp: Date.now(),
+      customData: "test_state_data",
+    };
 
-    console.log("History pushed with state:", history.state);
+    history.pushState(stateData, "Contact Page with State", "/contact");
+
+    // Test GTM history events
+    if (typeof window.dataLayer !== "undefined") {
+      // Simulate GTM history events
+      window.dataLayer.push({
+        event: "gtm.historyChange",
+        page: "contact",
+        timestamp: Date.now(),
+      });
+
+      window.dataLayer.push({
+        event: "gtm.pushstate",
+        page: "contact",
+        timestamp: Date.now(),
+      });
+    }
+
+    console.log("=== HISTORY PUSH TEST ===");
+    console.log("History pushed with state:", stateData);
     console.log("Current URL:", window.location.href);
+    console.log(
+      "GTM history events pushed (should be blocked in preview mode)"
+    );
+    console.log("=========================");
+
+    alert(
+      `History Push Test Complete!\n\nData: ${JSON.stringify(
+        stateData,
+        null,
+        2
+      )}\n\nCheck console for GTM history event blocking in preview mode.`
+    );
+  };
+
+  // Test GTM history blocking specifically
+  const testGTMHistoryBlocking = () => {
+    console.log("=== GTM HISTORY BLOCKING TEST ===");
+
+    if (typeof window.dataLayer !== "undefined") {
+      // Test various GTM history events
+      const historyEvents = [
+        { event: "gtm.historyChange", page: "contact" },
+        { event: "gtm.history", page: "contact" },
+        { event: "gtm.popstate", page: "contact" },
+        { event: "gtm.pushstate", page: "contact" },
+        { event: "gtm.replacestate", page: "contact" },
+        { event: "custom_history_event", page: "contact" },
+      ];
+
+      historyEvents.forEach((eventData, index) => {
+        console.log(`Pushing GTM history event ${index + 1}:`, eventData.event);
+        window.dataLayer.push(eventData);
+      });
+    }
+
+    // Test gtag history events
+    if (typeof window.gtag !== "undefined") {
+      console.log("Testing gtag history events...");
+      window.gtag("event", "page_view", { page_title: "Contact" });
+      window.gtag("event", "history_change", { page_title: "Contact" });
+    }
+
+    console.log(
+      "GTM History Blocking Test Complete - Check console for blocked events"
+    );
+    console.log("=====================================");
+
+    alert(
+      "GTM History Blocking Test Complete!\n\nCheck console to see which GTM history events were blocked in preview mode."
+    );
   };
 
   // Function to track social media clicks
@@ -154,7 +219,87 @@ export default function Contact() {
               return originalReplaceState.call(this, state, title, url);
             };
             
-            console.log('GTM Blocklist initialized - history state protection active');
+             // Disable GTM history tracking in preview mode
+             function disableGTMHistoryTracking() {
+               // Override GTM's history tracking functions
+               if (window.dataLayer) {
+                 // Block GTM history events
+                 const originalDataLayerPush = window.dataLayer.push;
+                 window.dataLayer.push = function(data) {
+                   if (isPreviewMode && data && typeof data === 'object') {
+                     // Block GTM history related events
+                     if (data.event === 'gtm.historyChange' || 
+                         data.event === 'gtm.history' ||
+                         data.event === 'gtm.popstate' ||
+                         data.event === 'gtm.pushstate' ||
+                         data.event === 'gtm.replacestate' ||
+                         (data.event && data.event.includes('history'))) {
+                       console.log('GTM Preview Mode - Blocking GTM history event:', data.event);
+                       return;
+                     }
+                     
+                     // Block custom events but allow GTM internal events
+                     if (data.event && 
+                         !data.event.startsWith('gtm.') && 
+                         !data.event.startsWith('gtag.') &&
+                         data.event !== 'gtm.js' &&
+                         data.event !== 'gtm.dom') {
+                       console.log('GTM Preview Mode - Blocking custom event:', data.event);
+                       return;
+                     }
+                   }
+                   
+                   return originalDataLayerPush.call(this, data);
+                 };
+               }
+               
+               // Override gtag function to block history events
+               if (typeof window.gtag === 'function') {
+                 const originalGtag = window.gtag;
+                 window.gtag = function() {
+                   if (isPreviewMode) {
+                     const args = Array.from(arguments);
+                     // Block history related gtag events
+                     if (args.length > 1 && args[0] === 'event' && 
+                         (args[1] === 'page_view' || 
+                          args[1] === 'history_change' ||
+                          args[1].includes('history'))) {
+                       console.log('GTM Preview Mode - Blocking gtag history event:', args[1]);
+                       return;
+                     }
+                   }
+                   
+                   return originalGtag.apply(this, arguments);
+                 };
+               }
+               
+               // Disable GTM's automatic history tracking
+               if (window.google_tag_manager) {
+                 // Override GTM's history tracking
+                 const originalGTM = window.google_tag_manager;
+                 if (originalGTM && originalGTM.history) {
+                   originalGTM.history = {
+                     push: function() { 
+                       if (isPreviewMode) {
+                         console.log('GTM Preview Mode - Blocking GTM history push');
+                         return;
+                       }
+                     },
+                     replace: function() { 
+                       if (isPreviewMode) {
+                         console.log('GTM Preview Mode - Blocking GTM history replace');
+                         return;
+                       }
+                     }
+                   };
+                 }
+               }
+             }
+             
+             // Initialize GTM history blocking
+             disableGTMHistoryTracking();
+             
+             console.log('GTM Blocklist initialized - history state and GTM history tracking protection active');
           `}
         </script>
       </Helmet>
@@ -173,16 +318,25 @@ export default function Contact() {
         Contact
       </h1>
 
-      {/* Test History Push Button */}
+      {/* Test History Push Buttons */}
       <div className="mx-auto mb-6 text-center">
-        <button
-          onClick={testHistoryPush}
-          className="rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
-        >
-          Test History Push State
-        </button>
+        <div className="flex flex-col gap-3 sm:flex-row sm:justify-center">
+          <button
+            onClick={testHistoryPush}
+            className="rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
+          >
+            Test History Push State
+          </button>
+          <button
+            onClick={testGTMHistoryBlocking}
+            className="rounded bg-red-600 px-4 py-2 text-white hover:bg-red-700"
+          >
+            Test GTM History Blocking
+          </button>
+        </div>
         <p className="mt-2 text-sm text-gray-600">
-          Test GTM Blocklist - Check console for results
+          Test GTM History Blocking - Check console for blocked events in
+          preview mode
         </p>
       </div>
 
