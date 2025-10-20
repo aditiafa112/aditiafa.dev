@@ -22,7 +22,7 @@ export default function Contact() {
         customData: "test_state_data",
       },
       "Contact Page with State",
-      "/contact?test=1" // Note: ini akan disable tracking karena ada query string
+      "/contact"
     );
 
     console.log("History pushed with state:", history.state);
@@ -31,17 +31,6 @@ export default function Contact() {
 
   // Function to track social media clicks
   const trackSocialClick = (platform: string, url: string) => {
-    // Check if tracking conditions are met
-    const isContactPage = window.location.pathname === "/contact";
-    const hasQueryString = window.location.search.length > 0;
-    const hasHash = window.location.hash.length > 0;
-    const shouldTrack = isContactPage && !hasQueryString && !hasHash;
-
-    if (!shouldTrack) {
-      console.log(`Tracking disabled - click on ${platform} not tracked`);
-      return;
-    }
-
     // Track with Google Analytics 4
     if (typeof window.gtag !== "undefined") {
       window.gtag("event", "social_click", {
@@ -80,76 +69,123 @@ export default function Contact() {
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://aditiafa.dev/contact" />
 
-        {/* Google Analytics 4 - Conditional Loading */}
-        {typeof window !== "undefined" &&
-          window.location.pathname === "/contact" &&
-          window.location.search === "" &&
-          window.location.hash === "" && (
-            <>
-              <script
-                async
-                src="https://www.googletagmanager.com/gtag/js?id=G-9L8G63EBVG"
-              ></script>
-              <script>
-                {`
-                window.dataLayer = window.dataLayer || [];
-                function gtag(){dataLayer.push(arguments);}
-                gtag('js', new Date());
-                gtag('config', 'G-9L8G63EBVG');
-                console.log('GA4 loaded - conditions met');
-              `}
-              </script>
-            </>
-          )}
+        {/* Google tag (gtag.js) - Google Analytics 4 */}
+        <script
+          async
+          src="https://www.googletagmanager.com/gtag/js?id=G-9L8G63EBVG"
+        ></script>
+        <script>
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-9L8G63EBVG');
+          `}
+        </script>
 
-        {/* Google Tag Manager - Conditional Loading */}
-        {typeof window !== "undefined" &&
-          window.location.pathname === "/contact" &&
-          window.location.search === "" &&
-          window.location.hash === "" && (
-            <>
-              <script>
-                {`
-                (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-                new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-                j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-                'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-                })(window,document,'script','dataLayer','GTM-W6W9WSF7');
-                
-                // Custom configuration for contact page
-                window.dataLayer = window.dataLayer || [];
-                window.dataLayer.push({
-                  'page_type': 'contact',
-                  'custom_page': true
-                });
-                console.log('GTM loaded - conditions met');
-              `}
-              </script>
-            </>
-          )}
+        {/* Google Tag Manager */}
+        <script>
+          {`
+            (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+            new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+            j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+            'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+            })(window,document,'script','dataLayer','GTM-W6W9WSF7');
+            
+            // GTM Blocklist untuk mencegah capture history state di preview mode
+            window.dataLayer = window.dataLayer || [];
+            
+            // Override history.pushState untuk block di preview mode
+            const originalPushState = history.pushState;
+            history.pushState = function(state, title, url) {
+              // Check if in GTM preview mode
+              const isPreviewMode = (
+                window.location.search.includes('gtm_debug') ||
+                window.location.search.includes('gtm_preview') ||
+                window.location.search.includes('gtm_auth') ||
+                window.location.hash.includes('gtm_debug') ||
+                window.location.hash.includes('gtm_preview') ||
+                document.cookie.includes('gtm_debug') ||
+                document.cookie.includes('gtm_preview') ||
+                window.location.hostname.includes('preview') ||
+                window.location.hostname.includes('debug')
+              );
+              
+              if (isPreviewMode) {
+                console.log('GTM Preview Mode detected - blocking history state capture');
+                // Block state data from being captured
+                const blockedState = {
+                  blocked: true,
+                  reason: 'GTM Preview Mode',
+                  timestamp: Date.now()
+                };
+                return originalPushState.call(this, blockedState, title, url);
+              }
+              
+              // Normal behavior for production
+              return originalPushState.call(this, state, title, url);
+            };
+            
+            // Override history.replaceState untuk block di preview mode
+            const originalReplaceState = history.replaceState;
+            history.replaceState = function(state, title, url) {
+              const isPreviewMode = (
+                window.location.search.includes('gtm_debug') ||
+                window.location.search.includes('gtm_preview') ||
+                window.location.search.includes('gtm_auth') ||
+                window.location.hash.includes('gtm_debug') ||
+                window.location.hash.includes('gtm_preview') ||
+                document.cookie.includes('gtm_debug') ||
+                document.cookie.includes('gtm_preview') ||
+                window.location.hostname.includes('preview') ||
+                window.location.hostname.includes('debug')
+              );
+              
+              if (isPreviewMode) {
+                console.log('GTM Preview Mode detected - blocking history replace state capture');
+                const blockedState = {
+                  blocked: true,
+                  reason: 'GTM Preview Mode',
+                  timestamp: Date.now()
+                };
+                return originalReplaceState.call(this, blockedState, title, url);
+              }
+              
+              return originalReplaceState.call(this, state, title, url);
+            };
+            
+            console.log('GTM Blocklist initialized - history state protection active');
+          `}
+        </script>
       </Helmet>
 
-      {/* Google Tag Manager (noscript) - Disabled */}
-      <noscript>{/* GTM noscript disabled - no tracking */}</noscript>
+      {/* Google Tag Manager (noscript) */}
+      <noscript>
+        <iframe
+          src="https://www.googletagmanager.com/ns.html?id=GTM-W6W9WSF7"
+          height="0"
+          width="0"
+          style={{ display: "none", visibility: "hidden" }}
+        />
+      </noscript>
 
       <h1 className="mx-auto mb-6 whitespace-nowrap text-xl font-bold sm:text-2xl md:text-4xl">
         Contact
       </h1>
 
       {/* Test History Push Button */}
-      <div className="mx-auto mb-4 text-center">
+      <div className="mx-auto mb-6 text-center">
         <button
           onClick={testHistoryPush}
-          className="rounded bg-red-600 px-4 py-2 text-white hover:bg-red-700"
+          className="rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
         >
-          Test History Push (Disable Tracking)
+          Test History Push State
         </button>
+        <p className="mt-2 text-sm text-gray-600">
+          Test GTM Blocklist - Check console for results
+        </p>
       </div>
-      <p className="mb-12 text-center">
-        Let&apos;s connect! I would be happy to be friends with you.
-        <br />
-        Here&apos;s the best way to reach me:
-      </p>
+
       <div className="mx-auto grid w-full grid-cols-2 gap-2 sm:gap-4 md:grid-cols-2">
         <a
           href="mailto:aditiafa112@gmail.com"
