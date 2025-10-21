@@ -36,40 +36,47 @@ export default function Contact() {
             // GTM Blocklist - Block certain events from being tracked
             window.dataLayer = window.dataLayer || [];
             
-            // Override dataLayer.push to implement blocklist
-            const originalDataLayerPush = window.dataLayer.push;
-            window.dataLayer.push = function(data) {
-              // Check if event should be blocked
-              if (data && typeof data === 'object' && data.event) {
-                // Block list of events to prevent tracking
-                const blockedEvents = [
-                  'gtm.historyChange',
-                  'gtm.history',
-                ];
-                
-                // Check if event is in blocklist
-                if (blockedEvents.includes(data.event)) {
-                  console.log('GTM Blocklist: Blocked event:', data.event);
-                  return;
+            // Check if blocklist is already initialized to prevent redeclaration
+            if (!window.gtmBlocklistInitialized) {
+              // Override dataLayer.push to implement blocklist
+              const originalDataLayerPush = window.dataLayer.push;
+              window.dataLayer.push = function(data) {
+                // Check if event should be blocked
+                if (data && typeof data === 'object' && data.event) {
+                  // Block list of events to prevent tracking
+                  const blockedEvents = [
+                    'gtm.historyChange',
+                    'gtm.history',
+                  ];
+                  
+                  // Check if event is in blocklist
+                  if (blockedEvents.includes(data.event)) {
+                    console.log('GTM Blocklist: Blocked event:', data.event);
+                    return;
+                  }
+                  
+                  // Block events containing certain keywords
+                  const blockedKeywords = ['debug', 'test', 'preview', 'development'];
+                  if (blockedKeywords.some(keyword => 
+                    data.event.toLowerCase().includes(keyword) ||
+                    (data.page_title && data.page_title.toLowerCase().includes(keyword)) ||
+                    (data.page_location && data.page_location.toLowerCase().includes(keyword))
+                  )) {
+                    console.log('GTM Blocklist: Blocked event with blocked keyword:', data.event);
+                    return;
+                  }
                 }
                 
-                // Block events containing certain keywords
-                const blockedKeywords = ['debug', 'test', 'preview', 'development'];
-                if (blockedKeywords.some(keyword => 
-                  data.event.toLowerCase().includes(keyword) ||
-                  (data.page_title && data.page_title.toLowerCase().includes(keyword)) ||
-                  (data.page_location && data.page_location.toLowerCase().includes(keyword))
-                )) {
-                  console.log('GTM Blocklist: Blocked event with blocked keyword:', data.event);
-                  return;
-                }
-              }
+                // Allow event to proceed
+                return originalDataLayerPush.call(this, data);
+              };
               
-              // Allow event to proceed
-              return originalDataLayerPush.call(this, data);
-            };
-            
-            console.log('GTM Blocklist initialized - blocking configured events');
+              // Mark as initialized
+              window.gtmBlocklistInitialized = true;
+              console.log('GTM Blocklist initialized - blocking configured events');
+            } else {
+              console.log('GTM Blocklist already initialized - skipping');
+            }
           `}
         </script>
       </Helmet>
