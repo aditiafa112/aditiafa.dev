@@ -111,6 +111,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       if (data && typeof data === 'object' && data.event) {
         // Block GTM history related events
         if (data.event === 'gtm.historyChange' || 
+            data.event === 'gtm.historyChange-v2' ||
             data.event === 'gtm.history' ||
             data.event === 'gtm.popstate' ||
             data.event === 'gtm.pushstate' ||
