@@ -68,10 +68,13 @@ export default function Contact() {
                 // Check if event should be blocked
                 if (data && typeof data === 'object' && data.event) {
                   // Block list of events to prevent tracking
+                  console.log('GTM Blocklist: Blocked event:', data.event);
                   const blockedEvents = [
                     'gtm.historyChange',
                     'gtm.history',
+                    'gtm.gtm.historyChange-v2',
                   ];
+                  console.log('Blocked events:', blockedEvents);
                   
                   // Check if event is in blocklist
                   if (blockedEvents.includes(data.event)) {
