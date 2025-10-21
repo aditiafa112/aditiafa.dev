@@ -1,12 +1,50 @@
 import MainLayout from "@/components/layouts/MainLayout";
 import React from "react";
+import { useRouter } from "next/router";
 
 export default function About() {
+  const router = useRouter();
+
+  // Function to navigate to contact page with state
+  const navigateToContact = () => {
+    const stateData = {
+      from: "about",
+      timestamp: Date.now(),
+      user: "visitor",
+      navigationType: "button_click",
+      previousPage: "about",
+      data: {
+        message: "Navigated from About page",
+        source: "about_navigation_button",
+      },
+    };
+
+    // Push state and navigate using Next.js Router
+    history.pushState(stateData, "Contact Page", "/contact");
+
+    // Navigate to contact page using Next.js Router
+    router.push("/contact");
+  };
+
   return (
     <MainLayout>
       <h1 className="mx-auto mb-6 whitespace-nowrap text-xl font-bold sm:text-2xl md:text-4xl">
         About Me
       </h1>
+
+      {/* Navigation Button */}
+      <div className="mx-auto mb-6 text-center">
+        <button
+          onClick={navigateToContact}
+          className="rounded bg-green-600 px-6 py-3 text-white transition-colors duration-200 hover:bg-green-700"
+        >
+          Go to Contact Page
+        </button>
+        <p className="mt-2 text-sm text-gray-600">
+          Click to navigate to Contact page with state data
+        </p>
+      </div>
+
       <section className="mb-8" id="about-me">
         <p>What I&apos;m doing right now?</p>
         <p>

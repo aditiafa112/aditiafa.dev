@@ -1,8 +1,32 @@
 import MainLayout from "@/components/layouts/MainLayout";
 import Image from "next/image";
 import { Helmet } from "react-helmet";
+import { useRouter } from "next/router";
 
 export default function Contact() {
+  const router = useRouter();
+
+  // Function to navigate to about page with state
+  const navigateToAbout = () => {
+    const stateData = {
+      from: "contact",
+      timestamp: Date.now(),
+      user: "visitor",
+      navigationType: "button_click",
+      previousPage: "contact",
+      data: {
+        message: "Navigated from Contact page",
+        source: "contact_navigation_button",
+      },
+    };
+
+    // Push state and navigate using Next.js Router
+    history.pushState(stateData, "About Page", "/about");
+
+    // Navigate to about page using Next.js Router
+    router.push("/about");
+  };
+
   return (
     <MainLayout>
       <Helmet>
@@ -94,6 +118,19 @@ export default function Contact() {
       <h1 className="mx-auto mb-6 whitespace-nowrap text-xl font-bold sm:text-2xl md:text-4xl">
         Contact
       </h1>
+
+      {/* Navigation Button */}
+      <div className="mx-auto mb-6 text-center">
+        <button
+          onClick={navigateToAbout}
+          className="rounded bg-blue-600 px-6 py-3 text-white transition-colors duration-200 hover:bg-blue-700"
+        >
+          Go to About Page
+        </button>
+        <p className="mt-2 text-sm text-gray-600">
+          Click to navigate to About page with state data
+        </p>
+      </div>
 
       <div className="mx-auto grid w-full grid-cols-2 gap-2 sm:gap-4 md:grid-cols-2">
         <a
