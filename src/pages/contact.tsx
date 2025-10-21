@@ -72,7 +72,7 @@ export default function Contact() {
                   const blockedEvents = [
                     'gtm.historyChange',
                     'gtm.history',
-                    'gtm.gtm.historyChange-v2',
+                    'gtm.historyChange-v2',
                   ];
                   console.log('Blocked events:', blockedEvents);
                   
