@@ -15,7 +15,7 @@ const Content: FunctionComponent<PropsWithChildren<IContent>> = (props) => {
       className={clsxm(
         WorkSans.className,
         "relative mx-auto flex w-full max-w-screen-lg flex-1 flex-col px-8",
-        className
+        className,
       )}
     >
       {children}

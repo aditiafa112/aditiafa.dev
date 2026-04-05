@@ -11,7 +11,7 @@ const Footer: FunctionComponent<PropsWithChildren<IFooter>> = (props) => {
   const styleFooter = clsxm(
     "max-w-screen-lg w-full z-10 px-8 mx-auto mt-10 mb-10",
     fixedMode &&
-      "fixed w-full z-10 bottom-0 max-w-screen-lg px-8 left-1/2 -translate-x-1/2 mt-0 mx-0"
+      "fixed w-full z-10 bottom-0 max-w-screen-lg px-8 left-1/2 -translate-x-1/2 mt-0 mx-0",
   );
 
   return (

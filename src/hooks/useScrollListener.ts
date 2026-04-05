@@ -21,7 +21,7 @@ const getReference = <T>(reference: Reference<T>) => {
  */
 function useScrollListener<T extends Element>(
   callback: (scrollPosition: ScrollListenerParams) => void,
-  reference: Reference<T>
+  reference: Reference<T>,
 ) {
   const handleScroll = useCallback(() => {
     const { isReactRef, element } = getReference(reference);

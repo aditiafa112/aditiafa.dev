@@ -69,7 +69,7 @@ export default Career;
 
 export const getStaticProps: GetStaticProps<MediumStories> = async () => {
   const res = await fetch(
-    "https://api.rss2json.com/v1/api.json?rss_url=https://medium.com/feed/@aditiafa112"
+    "https://api.rss2json.com/v1/api.json?rss_url=https://medium.com/feed/@aditiafa112",
   );
   const data = await res.json();
 

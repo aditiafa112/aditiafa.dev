@@ -20,7 +20,7 @@ const Navbar = () => {
     <nav
       className={clsxm(
         "fixed top-0 z-20 w-full bg-transparent transition duration-300 ease-in-out",
-        !transparent && "bg-white shadow-md"
+        !transparent && "bg-white shadow-md",
       )}
     >
       <div className="mx-auto flex h-12 max-w-screen-lg items-center justify-between px-8 md:h-24">
@@ -45,7 +45,7 @@ const Navbar = () => {
           className={clsxm(
             "hidden sm:block",
             open &&
-              "fixed left-1/2 right-1/2 top-0 z-20 mt-2 flex w-[95%] -translate-x-1/2 flex-col bg-white p-4"
+              "fixed left-1/2 right-1/2 top-0 z-20 mt-2 flex w-[95%] -translate-x-1/2 flex-col bg-white p-4",
           )}
         >
           {open && (
@@ -59,7 +59,7 @@ const Navbar = () => {
           <Link
             href="/"
             className={clsxm(
-              "mx-2 px-1 text-lg font-medium text-slate-700 transition duration-300 ease-in-out hover:bg-slate-700 hover:text-white"
+              "mx-2 px-1 text-lg font-medium text-slate-700 transition duration-300 ease-in-out hover:bg-slate-700 hover:text-white",
             )}
           >
             home
@@ -73,7 +73,7 @@ const Navbar = () => {
                 className={clsxm(
                   "mx-2 px-1 text-lg font-medium text-slate-700 transition duration-300 ease-in-out hover:bg-slate-700 hover:text-white",
                   pathname.toLowerCase() === menu.url &&
-                    "border-slate-700 sm:border-b-2"
+                    "border-slate-700 sm:border-b-2",
                 )}
               >
                 {menu.name}
@@ -85,7 +85,7 @@ const Navbar = () => {
           className={clsxm(
             "hidden",
             open &&
-              "fixed bottom-0 left-0 z-10 block h-screen w-full bg-gray-700 opacity-50"
+              "fixed bottom-0 left-0 z-10 block h-screen w-full bg-gray-700 opacity-50",
           )}
           onClick={() => setOpen(false)}
         ></div>

@@ -24,6 +24,12 @@ const LIST_MENU: ListMenuType[] = [
     title: "03 contact",
     url: "/contact",
   },
+  {
+    id: "04",
+    name: "wedding invitation",
+    title: "04 generate wedding invitation",
+    url: "/invitation",
+  },
 ];
 
 export default LIST_MENU;
